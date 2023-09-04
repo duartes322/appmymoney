@@ -1,4 +1,6 @@
-import 'package:app_my_money/src/home/page/home_page.dart';
+import 'package:app_my_money/src/modules/initial/page/initial_page.dart';
+import 'package:app_my_money/src/modules/login/page/login_page.dart';
+import 'package:app_my_money/src/router/app_router.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,9 +18,12 @@ class App extends StatelessWidget {
         primarySwatch: Colors.green,
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'MyMoney'),
+      home: const InitialPage(),
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.dark(),
+      routes: {
+        AppRouter.login: (context) => const LoginPage(),
+      },
     );
   }
 }
