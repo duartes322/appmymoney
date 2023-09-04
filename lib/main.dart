@@ -11,12 +11,14 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'App MyMoney',
+      title: 'MyMoney',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
+        useMaterial3: true,
       ),
-      home: const HomePage(title: 'App MyMoney'),
+      home: const HomePage(title: 'MyMoney'),
+      debugShowCheckedModeBanner: false,
+      darkTheme: ThemeData.dark(),
     );
   }
 }
