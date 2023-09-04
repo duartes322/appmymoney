@@ -1,3 +1,4 @@
+import 'package:app_my_money/src/shared/components/app_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../controller/home_controller.dart';
@@ -14,16 +15,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late HomeController homeController;
 
+  bool isLoading = true;
+
   @override
   void initState(){
     super.initState();
-
     homeController = HomeController();
+
+    Future.delayed(const Duration(seconds: 3)).then((_) => setState(() {
+      isLoading = false;
+    })); 
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading
+    ? const AppLoading()
+    : Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
