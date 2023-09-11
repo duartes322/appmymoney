@@ -1,3 +1,4 @@
+import 'package:app_my_money/src/modules/home/home_page.dart';
 import 'package:app_my_money/src/modules/initial/page/initial_page.dart';
 import 'package:app_my_money/src/modules/login/page/login_page.dart';
 import 'package:app_my_money/src/modules/personal_register/page/personal_register.dart';
@@ -27,6 +28,7 @@ class App extends StatelessWidget {
         AppRouter.login: (context) => const LoginPage(),
         AppRouter.register: (context) => const RegisterPage(),
         AppRouter.personalRegister: (context) => const PersonalRegisterPage(),
+        AppRouter.home: (context) => const HomePage(),
       },
     );
   }
