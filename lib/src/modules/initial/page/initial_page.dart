@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app_my_money/src/shared/storage/app_keys.dart';
+import 'package:app_my_money/src/shared/storage/app_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:app_my_money/src/router/app_router.dart';
 import 'package:app_my_money/src/shared/colors/app_colors.dart';
@@ -14,8 +16,11 @@ class InitialPage extends StatefulWidget {
 
 class _InitialPageState extends State<InitialPage> {
   void redirect(BuildContext context) {
-    Timer(const Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacementNamed(AppRouter.login);
+    Timer(const Duration(seconds: 2), () async {
+      String? user = await AppSecureStorage.readItem(Appkeys.user);
+
+      Navigator.of(context).pushReplacementNamed(
+          user != null ? AppRouter.home : AppRouter.login);
     });
   }
 
@@ -31,7 +36,7 @@ class _InitialPageState extends State<InitialPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: const [
-            AppLogoTitle(title: 'My Money'),
+            AppLogoTitle(title: 'MyMoney'),
           ],
         ),
       )),

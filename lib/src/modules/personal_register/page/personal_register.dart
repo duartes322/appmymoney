@@ -1,3 +1,4 @@
+import 'package:app_my_money/src/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -50,7 +51,11 @@ class _PersonalRegisterPageState extends State<PersonalRegisterPage> {
   void reactsToSendDataSuccess() {
     sendDataReactionDisposer =
         reaction((_) => controller.isSuccess, (bool success) {
-      if (success) Navigator.of(context).pop();
+      if (success) {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(AppRouter.home, (route) => false);
+        controller.isLoading = false;
+      }
     });
   }
 
@@ -118,6 +123,32 @@ class _PersonalRegisterPageState extends State<PersonalRegisterPage> {
                                 decoration: const InputDecoration(
                                     label: Text("Limite de gastos")),
                               ),
+                              limitValueController.text == '0.0'
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(top: 20),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xFFE0E0E0),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "Informe seu limite de gastos",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
                               Padding(
                                 padding: const EdgeInsets.only(top: 20),
                                 child: AppButton(

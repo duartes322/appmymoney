@@ -41,6 +41,22 @@ mixin _$LoginController on _LoginController, Store {
     });
   }
 
+  late final _$isFirstAcessAtom =
+      Atom(name: '_LoginController.isFirstAcess', context: context);
+
+  @override
+  bool get isFirstAcess {
+    _$isFirstAcessAtom.reportRead();
+    return super.isFirstAcess;
+  }
+
+  @override
+  set isFirstAcess(bool value) {
+    _$isFirstAcessAtom.reportWrite(value, super.isFirstAcess, () {
+      super.isFirstAcess = value;
+    });
+  }
+
   late final _$checkDataAsyncAction =
       AsyncAction('_LoginController.checkData', context: context);
 
@@ -63,11 +79,56 @@ mixin _$LoginController on _LoginController, Store {
     return _$sendDataAsyncAction.run(() => super.sendData());
   }
 
+  late final _$verifyFirstAcessAsyncAction =
+      AsyncAction('_LoginController.verifyFirstAcess', context: context);
+
+  @override
+  Future<void> verifyFirstAcess() {
+    return _$verifyFirstAcessAsyncAction.run(() => super.verifyFirstAcess());
+  }
+
+  late final _$_LoginControllerActionController =
+      ActionController(name: '_LoginController', context: context);
+
+  @override
+  void setSucess({bool? value}) {
+    final _$actionInfo = _$_LoginControllerActionController.startAction(
+        name: '_LoginController.setSucess');
+    try {
+      return super.setSucess(value: value);
+    } finally {
+      _$_LoginControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setLoading({bool? value}) {
+    final _$actionInfo = _$_LoginControllerActionController.startAction(
+        name: '_LoginController.setLoading');
+    try {
+      return super.setLoading(value: value);
+    } finally {
+      _$_LoginControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void getException(int code) {
+    final _$actionInfo = _$_LoginControllerActionController.startAction(
+        name: '_LoginController.getException');
+    try {
+      return super.getException(code);
+    } finally {
+      _$_LoginControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 isLoading: ${isLoading},
-isSuccess: ${isSuccess}
+isSuccess: ${isSuccess},
+isFirstAcess: ${isFirstAcess}
     ''';
   }
 }

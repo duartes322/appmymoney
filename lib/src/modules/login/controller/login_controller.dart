@@ -16,6 +16,9 @@ abstract class _LoginController with Store {
   @observable
   bool isSuccess = false;
 
+  @observable
+  bool isFirstAcess = false;
+
   late String email;
   late String password;
   late BuildContext buildContext;
@@ -27,14 +30,13 @@ abstract class _LoginController with Store {
     required BuildContext buildContext,
   }) async {
     this.buildContext = buildContext;
-    if(_validate(
-      emailController: emailController, 
-      passwordController: passwordController)) {
-        email = emailController;
-        password = passwordController;
-        isLoading = true;
-        await sendData();
-        isLoading = false;
+    if (_validate(
+        emailController: emailController,
+        passwordControler: passwordController)) {
+      email = emailController;
+      password = passwordController;
+      setLoading();
+      await sendData();
     } else {
       AppSnackbar.openMessage(
         context: buildContext,
@@ -45,31 +47,37 @@ abstract class _LoginController with Store {
 
   bool _validate({
     required String emailController,
-    required String passwordController,
+    required String passwordControler,
   }) {
-    return (Validator.isEmail(emailController) && passwordController.isNotEmpty);
+    return (Validator.isEmail(emailController) && passwordControler.isNotEmpty);
   }
 
   @action
   Future<void> sendData() async {
     Map result = await service.sendData(
-      username: email, 
-      password: password
+      username: email,
+      password: password,
     );
 
     result.containsKey('success')
-      ? isSuccess = true
-      : getException(result['exception']);
+        ? setSucess()
+        : getException(result['exception']);
   }
-  
+
+  @action
+  Future<void> verifyFirstAcess() async {
+    isFirstAcess = await service.verifyFirstAcess();
+  }
+
   @action
   void setSucess({bool? value}) => isSuccess = value ?? !isSuccess;
 
   @action
   void setLoading({bool? value}) => isLoading = value ?? !isLoading;
-  
+
   @action
   void getException(int code) {
+    setLoading();
     switch (code) {
       case 401:
         AppSnackbar.openMessage(
@@ -84,7 +92,7 @@ abstract class _LoginController with Store {
         );
         break;
       default:
-      AppSnackbar.openMessage(
+        AppSnackbar.openMessage(
           context: buildContext,
           message: "Erro inesperado, tente mais tarde",
         );

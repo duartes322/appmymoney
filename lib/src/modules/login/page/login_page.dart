@@ -40,12 +40,16 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void reactsToSendDataSuccess() {
+ void reactsToSendDataSuccess() {
     sendDataReactionDisposer =
         reaction((_) => controller.isSuccess, (bool success) async {
       if (success) {
         controller.setSucess();
-        await Navigator.of(context).pushNamed(AppRouter.home);
+        await controller.verifyFirstAcess();
+        controller.isFirstAcess
+            ? await Navigator.of(context).pushNamed(AppRouter.personalRegister)
+            : await Navigator.of(context)
+                .pushNamedAndRemoveUntil(AppRouter.home, (route) => false);
         controller.setLoading();
       }
     });
@@ -68,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const AppLogoTitle(
-                      title: "Login",
+                      title: "Login MyMoney",
                       iconSize: 80,
                       titleSize: 20,
                     ),

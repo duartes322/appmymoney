@@ -76,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const AppLogoTitle(
-                                title: 'Cadastro My Money',
+                                title: 'Cadastro MyMoney',
                                 titleSize: 20,
                                 iconSize: 80,
                               ),

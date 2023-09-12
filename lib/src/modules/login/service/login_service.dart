@@ -1,21 +1,21 @@
+import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:app_my_money/src/modules/login/model/login_model.dart';
 import 'package:app_my_money/src/modules/login/repositories/login_repository.dart';
 import 'package:app_my_money/src/shared/storage/app_keys.dart';
 import 'package:app_my_money/src/shared/storage/app_secure_storage.dart';
-import 'package:dio/dio.dart';
 
-class LoginService{
-
+class LoginService {
   LoginRepository repository = LoginRepository();
 
   Future<Map<dynamic, dynamic>> sendData({
     required String username,
     required String password,
   }) async {
-    try{
+    try {
       LoginModel loginData = LoginModel(
-        username: username, 
-        password: password
+        username: username,
+        password: password,
       );
 
       await persistLocalData(
@@ -23,7 +23,7 @@ class LoginService{
       );
 
       return {"success": true};
-    } on DioError catch(exception){
+    } on DioError catch (exception) {
       return {"exception": sendException(exception)};
     }
   }
@@ -31,19 +31,27 @@ class LoginService{
   Future<void> persistLocalData(Response<Map<String, dynamic>> response) async {
     Map<String, dynamic>? result = response.data;
 
-    if(result != null){
+    if (result != null) {
       String token = result['access_token'];
       Map<String, dynamic> userData = result['additional_information'];
       String userId = userData['id'];
 
       AppSecureStorage.addItem(Appkeys.auth_token, token);
-      AppSecureStorage.addItem(Appkeys.user, userData.toString());
-      AppSecureStorage.addItem(Appkeys.user_id, userId); 
+      AppSecureStorage.addItem(Appkeys.user, jsonEncode(userData));
+      AppSecureStorage.addItem(Appkeys.user_id, userId);
     }
   }
 
   int sendException(Object error) {
     final DioError errorResult = error as DioError;
     return errorResult.response!.data['statusCode'];
+  }
+
+  Future<bool> verifyFirstAcess() async {
+    String? userId = await AppSecureStorage.readItem(Appkeys.user_id);
+
+    Response response = await repository.getGoal(userId!);
+
+    return response.data == '';
   }
 }

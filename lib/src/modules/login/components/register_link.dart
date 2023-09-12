@@ -21,7 +21,7 @@ class RegisterLink extends StatelessWidget {
           ),
         ),
         Text(
-          'My Money',
+          'MyMoney',
           style: TextStyle(
             color: AppColors.logo,
             fontWeight: FontWeight.bold,
